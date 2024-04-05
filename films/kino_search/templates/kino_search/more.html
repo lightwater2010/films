@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{title}}{% endblock %}
+{% block connect_with_static %}
+<link rel="stylesheet" type="text/css" href="{% static 'kino_search/css/more.css' %}">
+{% endblock %}
+{% block content %}
+
+<img src="{{film.poster}}" width="500px", height="600px" id="poster">
+<div id="film_div">
+    <h1 id="film_name">{{film|capfirst}}</h1>
+    <h2 class="main_info">Год создания: {{film.year}}</h2>
+    <h2 class="main_info">Жанр: {{film.genre}}</h2>
+    <h2 class="main_info">Страны: {{film.countries}}</h2>
+    {% if film.movie_length == 0 %}
+        <h2 class="main_info">Длина серии: {{film.series_length}} мин</h2>
+    {% else %}
+        <h2 class="main_info">Длина фильма: {{film.movie_length}} мин</h2>
+    {% endif %}
+    <h3 id="descr">{{film.description}}</h3>
+</div>
+
+{% endblock %}

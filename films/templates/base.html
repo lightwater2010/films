@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{%block title%}{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    {% block connect_with_static %}{% endblock %}
+</head>
+<body>
+    <header id="header">
+        <form id="kino_search" action="{% url 'search' %}" method="get">
+            <input type="search" name="q" id="search-input" placeholder="Название фильма">
+            <button type="submit" id="search-button"><a href="{% url 'home'%}" id="search_a">🔎</a></button>
+        </form>
+        <h1 id="header-text"><a href="{% url 'home' %}" id="header_a">Films</a></h1>
+        <ul id="navigation">
+            <button class="nav-buttons">Про нас</button>
+            <button class="nav-buttons">Регистрация</button>
+        </ul>
+
+    </header>
+
+
+    {% block content %}{% endblock %}
+
+</body>
+</html>
+<script>
+        let formData = {};
+        const form = document.querySelector('form');
+        const LS = localStorage;
+
+        form.addEventListener('input', function(event){
+            formData[event.target.name] = event.target.value;
+            LS.setItem('formData', JSON.stringify(formData));
+        });
+        if (LS.getItem('formData')) {
+            formData = JSON.parse(LS.getItem('formData'));
+            for (let key in formData){
+                form.elements[key].value = formData[key];
+            }
+        }
+</script>

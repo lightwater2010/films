@@ -1,0 +1,60 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{title}}{% endblock %}
+{% block connect_with_static %}
+<link rel="stylesheet" type="text/css" href="{% static 'kino_search/css/home.css' %}">
+{% endblock %}
+{% block content %}
+{% if films %}
+<div class="category_block">
+        <h1 class="header_of_category">Категории</h1><hr>
+        {% for genre in genres %}
+            <a href="{{ genre.get_absolute_urls }}" class="categories">{{genre}}</a><br>
+        {% endfor %}
+</div>
+<div id="result_films_div">
+    <h1>Найдено {{result_of_search}} фильмов:</h1><br>
+    {% for film in films %}
+        <div class="info-film">
+            <a href="{{film.get_absolute_urls}}" class="more_a">
+                <h2>{{film|capfirst }}</h2>
+                <div class="image-div"><img src="{{film.poster}}" width="200px", height="200px" class="film-image"></div>
+                <a href="{{film.get_absolute_urls}}"></a>
+            </a>
+        </div>
+    {% endfor %}
+</div>
+
+    <ul id="pagination_block">
+        {% if page_obj.has_previous %}
+        <li id="previous_li">
+            <button class="buttons_replace"><a href="?page={{page_obj.number|add:-1}}" class="a_replace"><</a></button>
+        </li>
+        {% endif %}
+        {% for p in paginator.page_range %}
+        <li class="paginator_text">
+            {% if p == page_obj.number %}
+                <button class="paginator_bt2"><a href="?page={{p}}" class="paginator_a2">{{p}}</a></button>
+            {% elif p > page_obj.number|add:-3 and p < page_obj.number|add:3 %}
+                <button class="paginator_bt"><a href="?page={{p}}" class="paginator_a">{{p}}</a></button>
+            {% endif %}
+        </li>
+        {% endfor %}
+        {% if page_obj.has_next %}
+            <li id="next-li">
+                <button class="buttons_replace"><a href="?page={{page_obj.number|add:1}}" class="a_replace">></a></button>
+            </li>
+        {% endif %}
+    </ul>
+{% else %}
+    <div class="category_block">
+        <h1 class="header_of_category">Категории</h1><hr>
+        {% for genre in genres %}
+            <a href="{{ genre.get_absolute_urls }}" class="categories">{{genre}}</a><br>
+        {% endfor %}
+    </div>
+    <h1>{{films}}</h1>
+{% endif %}
+
+{% endblock %}
